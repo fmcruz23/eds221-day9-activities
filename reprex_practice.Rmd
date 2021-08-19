@@ -37,12 +37,26 @@ mack_creek_lengths <- mack_creek_vertebrates %>%
   clean_names() %>% 
   select(year:sampledate) %>% 
   filter(section == "CC") %>% 
-  mutate(across(where(is.character, tolower))) %>% 
+  mutate(across(where(is.character), tolower)) %>% 
   drop_na(species) %>% 
   group_by(species) %>% 
   summarize(mean_length_cm = mean(length1, na.rm = TRUE),
             sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
   ungroup()
+```
+
+```{r}
+library(tidyverse)
+animal_facts <- tribble(
+  ~animal, ~food, ~weight,
+  "DOG", "KIBBLE", 70,
+  "CAT", "MILK", 60,
+  "COW", "GRASS", 100
+)
+
+animal_facts %>% 
+  mutate(across(where(is.character), tolower))
+
 ```
 
 ### reprex 2
@@ -55,10 +69,26 @@ mack_creek_vertebrates %>%
   clean_names() %>% 
   filter(species == "ONCL") %>% 
   ggplot(aes(x = length1, y = weight)) +
-         geom_point(aes(shape = 12), color = "purple") +
+         geom_point(shape = 12, color = "purple") +
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
 ```
+```{r}
+library(tidyverse)
+height_weight <- tribble(
+  ~height_in, ~weight,
+  60, 120,
+  65, 130, 
+  70, 125,
+  75, 150
+)
+
+ggplot(height_weight, aes(x = height_in, y = weight)) +
+  geom_point(shape = 11)
+
+
+```
+
 
 ## End
